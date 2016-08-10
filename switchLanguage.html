@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="./bower_components/angular/angular.js"></script>
+  <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="./bower_components/angular-translate/angular-translate.js"></script>
+  <script src="./bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+  <script src="./bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="./bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl as ctrl">
+  
+  <h1 translate="HELLO_WORLD"></h1>
+
+  <button ng-click="ctrl.toggleEnglish()">{{ 'SWITCH_LANGUAGE' | translate }}</button>
+
+  <script>
+    angular.module('myApp', ['pascalprecht.translate', 'ngCookies']);
+      
+    angular.module('myApp')
+      .config(['$translateProvider', function ($translateProvider) {
+        
+        $translateProvider
+          .useStaticFilesLoader({
+            prefix: './assets/lang/lang-',
+            suffix: '.json'
+          })
+          .preferredLanguage('de_DE')
+          .fallbackLanguage('en_US')
+          .useLocalStorage();
+      }])
+      .controller('myCtrl', ['$translate', function ($translate) {
+        var ctrl = this;
+        ctrl.toggleEnglish = function () {
+          if ( $translate.use() == 'en_US' ) {
+            $translate.use('de_DE');
+          } else {
+            $translate.use('en_US');
+          }
+        }
+      }]);
+
+  </script>
+</body>
+</html>

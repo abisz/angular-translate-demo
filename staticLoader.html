@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.11.1/angular-translate.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.11.1/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl as ctrl">
+  
+  <h1 translate="HELLO_WORLD"></h1>
+  <h2>{{ ctrl.subheading }}</h2>
+  <p translate="ONLY_ENGLISH"></p>
+
+  <script>
+    angular
+      .module('myApp', ['pascalprecht.translate'])
+      .config(['$translateProvider', function ($translateProvider) {
+        
+        $translateProvider
+          .useStaticFilesLoader({
+            prefix: './assets/lang/lang-',
+            suffix: '.json'
+          })
+          .preferredLanguage('de_DE')
+          .fallbackLanguage('en_US');
+      }])
+       .controller('myCtrl', ['$translate', function ($translate) {
+        var ctrl = this;
+
+        $translate.onReady(function () {
+          ctrl.subheading = $translate.instant('SUBHEADING');
+        });       
+        
+      }]);
+  </script>
+</body>
+</html>
